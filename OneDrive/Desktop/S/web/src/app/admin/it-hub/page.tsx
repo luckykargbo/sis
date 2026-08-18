@@ -83,8 +83,9 @@ const Icons = {
 export default function ITHubDashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<'audit' | 'admissions' | 'logs'>('audit');
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
 
-  const handleLogout = () => {
+  const confirmLogout = () => {
     localStorage.removeItem('sis_auth_user');
     window.location.href = '/sis_gate';
   };
@@ -208,7 +209,7 @@ export default function ITHubDashboard() {
               <Icons.Shield /> Vice Principal Quality Hub
             </Link>
 
-            <button onClick={handleLogout} className="w-full flex items-center gap-3 px-4 py-3 text-rose-300 hover:text-rose-100 hover:bg-rose-500/20 rounded-xl font-medium transition-colors text-xs border-t border-white/10 mt-6 text-left">
+            <button onClick={() => setShowLogoutModal(true)} className="w-full flex items-center gap-3 px-4 py-3 text-rose-300 hover:text-rose-100 hover:bg-rose-500/20 rounded-xl font-medium transition-colors text-xs border-t border-white/10 mt-6 text-left">
               <Icons.LogOut /> Log Out System
             </button>
           </nav>
@@ -535,6 +536,37 @@ export default function ITHubDashboard() {
                           </button>
                         </div>
                       </form>
+                    </div>
+                  </div>
+                {/* Logout Confirmation Modal */}
+                {showLogoutModal && (
+                  <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                    <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-gray-100 animate-in fade-in zoom-in duration-200">
+                      <div className="w-12 h-12 rounded-2xl bg-rose-100 text-rose-600 flex items-center justify-center mb-4 mx-auto">
+                        <Icons.LogOut />
+                      </div>
+                      <h3 className="text-lg font-bold text-gray-900 text-center font-[family-name:var(--font-outfit)]">
+                        Log Out Confirmation
+                      </h3>
+                      <p className="text-xs text-gray-600 text-center mt-2 leading-relaxed">
+                        Are you sure you want to log out of your account? Your active session will be securely closed and you will return to the S.I.S Gateway.
+                      </p>
+                      <div className="mt-6 flex items-center gap-3">
+                        <button
+                          type="button"
+                          onClick={() => setShowLogoutModal(false)}
+                          className="flex-1 py-2.5 border border-gray-200 rounded-xl text-xs font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+                        >
+                          Cancel / Stay Logged In
+                        </button>
+                        <button
+                          type="button"
+                          onClick={confirmLogout}
+                          className="flex-1 py-2.5 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-semibold shadow-sm transition-colors"
+                        >
+                          Yes, Log Out
+                        </button>
+                      </div>
                     </div>
                   </div>
                 )}
