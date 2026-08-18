@@ -42,12 +42,22 @@ const Icons = {
     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
     </svg>
+  ),
+  Activity: ({ className }: { className?: string }) => (
+    <svg className={className || "w-4 h-4"} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+    </svg>
+  ),
+  Shield: ({ className }: { className?: string }) => (
+    <svg className={className || "w-4 h-4"} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+    </svg>
   )
 };
 
 export default function PrincipalDashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState<'admissions' | 'staff' | 'broadcast' | 'analytics'>('admissions');
+  const [activeTab, setActiveTab] = useState<'admissions' | 'staff' | 'broadcast' | 'analytics' | 'lifecycle'>('admissions');
   const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   const confirmLogout = () => {
@@ -123,6 +133,9 @@ export default function PrincipalDashboard() {
             </button>
             <button onClick={() => { setActiveTab('broadcast'); setSidebarOpen(false); }} className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-colors text-xs ${activeTab === 'broadcast' ? 'bg-blue-600 text-white font-semibold shadow-sm' : 'text-white/70 hover:text-white hover:bg-white/5'}`}>
               <Icons.Radio /> Emergency Dispatcher
+            </button>
+            <button onClick={() => { setActiveTab('lifecycle'); setSidebarOpen(false); }} className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-colors text-xs ${activeTab === 'lifecycle' ? 'bg-blue-600 text-white font-semibold shadow-sm' : 'text-white/70 hover:text-white hover:bg-white/5'}`}>
+              <Icons.Activity /> Student Lifecycle &amp; BECE
             </button>
             <button onClick={() => { setActiveTab('analytics'); setSidebarOpen(false); }} className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-colors text-xs ${activeTab === 'analytics' ? 'bg-blue-600 text-white font-semibold shadow-sm' : 'text-white/70 hover:text-white hover:bg-white/5'}`}>
               <Icons.Chart /> Executive Analytics
@@ -412,6 +425,75 @@ export default function PrincipalDashboard() {
                         <div className="text-gray-500 mt-0.5">Weekly lab sessions active</div>
                       </div>
                       <span className="text-emerald-700 font-bold text-[11px]">OPTIMAL</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* TAB 5: Student Lifecycle & BECE/WASSCE Transitions */}
+            {activeTab === 'lifecycle' && (
+              <div className="bg-white rounded-2xl shadow-sm border border-gray-200/80 p-6 sm:p-8 max-w-4xl space-y-6 animate-in fade-in duration-200">
+                <div>
+                  <h2 className="text-lg font-bold text-gray-900 font-[family-name:var(--font-outfit)]">
+                    Student Lifecycle, BECE Transitions &amp; WASSCE Graduation
+                  </h2>
+                  <p className="text-xs text-gray-500 mt-0.5">
+                    Process returning students, transition JSS3 to SSS1 after BECE, and activate Alumni Mode for WASSCE graduates.
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* Re-Enrollment Lookup */}
+                  <div className="p-5 bg-slate-50 border border-slate-200 rounded-xl space-y-4">
+                    <h3 className="font-bold text-gray-900 text-sm flex items-center gap-2">
+                      <Icons.Activity className="w-4 h-4 text-blue-600" /> Returning Student Audit
+                    </h3>
+                    <p className="text-xs text-gray-600 leading-relaxed">
+                      Search for previous students who attended S.I.S (e.g. JSS1) and are returning for higher grades (e.g. SSS3).
+                    </p>
+                    <div className="space-y-2.5">
+                      <div className="p-3 bg-white border border-blue-100 rounded-lg space-y-2">
+                        <div className="flex justify-between items-center text-xs">
+                          <span className="font-bold text-gray-900">Alusine Kamara</span>
+                          <span className="px-2 py-0.5 bg-rose-100 text-rose-700 rounded font-semibold text-[9px] uppercase">Withdrawn (JSS2)</span>
+                        </div>
+                        <p className="text-[11px] text-gray-500">Parent: alusine.kamara.parent@gmail.com</p>
+                        <button type="button" onClick={() => alert('Student re-enrolled into SSS3. Former JSS data preserved.')} className="w-full py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded text-[11px] font-semibold transition-colors">
+                          Re-Enroll to SSS3
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Public Exam Graduation panel */}
+                  <div className="p-5 bg-slate-50 border border-slate-200 rounded-xl space-y-4">
+                    <h3 className="font-bold text-gray-900 text-sm flex items-center gap-2">
+                      <Icons.Shield className="w-4 h-4 text-emerald-600" /> BECE &amp; WASSCE Clearance
+                    </h3>
+                    <p className="text-xs text-gray-600 leading-relaxed">
+                      Transition JSS3 classes into SSS1 stream or graduate SSS3 students to archive active sessions.
+                    </p>
+                    <div className="space-y-2 text-xs">
+                      <div className="flex items-center justify-between p-2.5 bg-white border rounded-lg">
+                        <div>
+                          <p className="font-semibold text-gray-900">JSS 3 (BECE Candidates)</p>
+                          <p className="text-[10px] text-gray-500">45 active students ready for promotion</p>
+                        </div>
+                        <button type="button" onClick={() => alert('All JSS3 students promoted to SSS1. Basic exam history archived.')} className="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded font-bold text-[10px] uppercase">
+                          Promote to SSS1
+                        </button>
+                      </div>
+
+                      <div className="flex items-center justify-between p-2.5 bg-white border rounded-lg">
+                        <div>
+                          <p className="font-semibold text-gray-900">SSS 3 (WASSCE Candidates)</p>
+                          <p className="text-[10px] text-gray-500">38 active students graduating</p>
+                        </div>
+                        <button type="button" onClick={() => alert('Graduated. Accounts set to Alumni Mode. Read-only access enabled for mobile transcript views.')} className="px-2.5 py-1 bg-[#1B365D] hover:bg-blue-800 text-white rounded font-bold text-[10px] uppercase">
+                          Set Alumni Mode
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>

@@ -17,6 +17,32 @@ export default defineSchema({
     ),
     parentId: v.optional(v.id('users')),
     isActive: v.boolean(),
+    status: v.optional(v.union(
+      v.literal('ACTIVE'),
+      v.literal('WITHDRAWN'),
+      v.literal('SUSPENDED'),
+      v.literal('GRADUATED')
+    )),
+    dob: v.optional(v.string()),
+    currentGradeLevel: v.optional(v.string()),
+    enrollmentHistory: v.optional(v.array(
+      v.object({
+        gradeLevel: v.string(),
+        academicYear: v.string(),
+        startDate: v.number(),
+        endDate: v.optional(v.number()),
+        statusAtExit: v.string()
+      })
+    )),
+    academicTranscript: v.optional(v.array(
+      v.object({
+        term: v.string(),
+        subjectId: v.string(),
+        grade: v.string(),
+        score: v.number(),
+        examDate: v.number()
+      })
+    )),
     devicePushToken: v.optional(v.string()),
     tempPasscode: v.optional(v.string()),
     profileImageId: v.optional(v.id('_storage')),
