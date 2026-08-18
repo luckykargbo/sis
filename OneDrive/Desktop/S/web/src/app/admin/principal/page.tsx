@@ -164,7 +164,7 @@ export default function PrincipalDashboard() {
             </div>
 
             <button
-              onClick={handleLogout}
+              onClick={() => setShowLogoutModal(true)}
               className="px-3.5 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 font-semibold rounded-xl transition-colors text-xs border border-rose-200/80 flex items-center gap-1.5"
             >
               <Icons.LogOut /> <span className="hidden sm:inline">Log Out</span>
@@ -415,6 +415,10 @@ export default function PrincipalDashboard() {
                     </div>
                   </div>
                 </div>
+              </div>
+            )}
+          </main>
+        </div>
         {/* Logout Confirmation Modal */}
         {showLogoutModal && (
           <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">

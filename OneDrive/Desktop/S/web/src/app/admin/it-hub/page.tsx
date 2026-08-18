@@ -254,7 +254,7 @@ export default function ITHubDashboard() {
                 </button>
               )}
               <button
-                onClick={handleLogout}
+                onClick={() => setShowLogoutModal(true)}
                 className="px-3.5 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 font-semibold rounded-xl transition-colors text-xs border border-rose-200/80 flex items-center gap-1.5"
               >
                 <Icons.LogOut /> <span className="hidden sm:inline">Log Out</span>
@@ -538,42 +538,43 @@ export default function ITHubDashboard() {
                       </form>
                     </div>
                   </div>
-                {/* Logout Confirmation Modal */}
-                {showLogoutModal && (
-                  <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-                    <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-gray-100 animate-in fade-in zoom-in duration-200">
-                      <div className="w-12 h-12 rounded-2xl bg-rose-100 text-rose-600 flex items-center justify-center mb-4 mx-auto">
-                        <Icons.LogOut />
-                      </div>
-                      <h3 className="text-lg font-bold text-gray-900 text-center font-[family-name:var(--font-outfit)]">
-                        Log Out Confirmation
-                      </h3>
-                      <p className="text-xs text-gray-600 text-center mt-2 leading-relaxed">
-                        Are you sure you want to log out of your account? Your active session will be securely closed and you will return to the S.I.S Gateway.
-                      </p>
-                      <div className="mt-6 flex items-center gap-3">
-                        <button
-                          type="button"
-                          onClick={() => setShowLogoutModal(false)}
-                          className="flex-1 py-2.5 border border-gray-200 rounded-xl text-xs font-medium text-gray-700 hover:bg-gray-50 transition-colors"
-                        >
-                          Cancel / Stay Logged In
-                        </button>
-                        <button
-                          type="button"
-                          onClick={confirmLogout}
-                          className="flex-1 py-2.5 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-semibold shadow-sm transition-colors"
-                        >
-                          Yes, Log Out
-                        </button>
-                      </div>
-                    </div>
-                  </div>
                 )}
               </>
             )}
           </main>
         </div>
+        {/* Logout Confirmation Modal */}
+        {showLogoutModal && (
+          <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+            <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-gray-100 animate-in fade-in zoom-in duration-200">
+              <div className="w-12 h-12 rounded-2xl bg-rose-100 text-rose-600 flex items-center justify-center mb-4 mx-auto">
+                <Icons.LogOut />
+              </div>
+              <h3 className="text-lg font-bold text-gray-900 text-center font-[family-name:var(--font-outfit)]">
+                Log Out Confirmation
+              </h3>
+              <p className="text-xs text-gray-600 text-center mt-2 leading-relaxed">
+                Are you sure you want to log out of your account? Your active session will be securely closed and you will return to the S.I.S Gateway.
+              </p>
+              <div className="mt-6 flex items-center gap-3">
+                <button
+                  type="button"
+                  onClick={() => setShowLogoutModal(false)}
+                  className="flex-1 py-2.5 border border-gray-200 rounded-xl text-xs font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+                >
+                  Cancel / Stay Logged In
+                </button>
+                <button
+                  type="button"
+                  onClick={confirmLogout}
+                  className="flex-1 py-2.5 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-semibold shadow-sm transition-colors"
+                >
+                  Yes, Log Out
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </AuthGuard>
   );
