@@ -499,11 +499,12 @@ return `
         </div>
         <div>
           <div class="header-title">S.I.S. | Nos Educamus Mentem</div>
-          <div class="header-subtitle" id="header-subtitle">Student Portal • Khadija Bangura</div>
+          <div class="header-subtitle" id="header-subtitle">Student Portal • Alexander Sterling</div>
         </div>
       </div>
       <select class="role-switcher" onchange="switchRole(this.value)">
-        <option value="STUDENT" selected>Student</option>
+        <option value="STUDENT" selected>Student (Alexander)</option>
+        <option value="ALUMNI">Alumni (Kwabena)</option>
         <option value="PARENT">Parent</option>
         <option value="PRINCIPAL">Principal</option>
         <option value="TEACHER">Teacher</option>
@@ -546,7 +547,8 @@ function switchRole(role) {
   state.role = role;
   state.tab = 'home';
   const subtitles = {
-    STUDENT: 'Student Portal • Khadija Bangura',
+    STUDENT: 'Student Portal • Alexander Sterling',
+    ALUMNI: 'Alumni Archive • Kwabena',
     PARENT: 'Parent Portal • Mrs. F. Sesay',
     PRINCIPAL: 'Principal Command Center',
     TEACHER: 'Faculty Portal • Mr. Kamara',
@@ -572,7 +574,7 @@ function renderNav() {
 
   nav.innerHTML = tabs.map(t => {
     const isActive = state.tab === t.id;
-    return '<button class="nav-btn ' + (isActive ? 'active' : '') + '" onclick="switchTab(\\'' + t.id + '\\')">' +
+    return '<button class="nav-btn ' + (isActive ? 'active' : '') + '" onclick="switchTab(\'' + t.id + '\')">' +
       '<div class="nav-pill" style="position:relative">' + t.icon +
       (t.badge ? '<div class="nav-badge"></div>' : '') +
       '</div>' +
@@ -604,121 +606,24 @@ function renderContent() {
 }
 
 // ═══════════════════════════════════════════════
-// 1. HOME — Student Dashboard
+// 1. HOME — Student/Alumni Dashboard
 // ═══════════════════════════════════════════════
 function renderHome(el) {
+  if (state.role === 'ALUMNI') {
+    renderAlumniHome(el);
+    return;
+  }
+  renderActiveStudentHome(el);
+}
+
+function renderAlumniHome(el) {
   el.innerHTML = '<div class="fade-in-up">' +
-    // Welcome banner
+    // Top banner
+    '<div style="background:#0F1E36;color:white;padding:8px 12px;margin:-16px -16px 16px;text-align:center;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:6px">' +
+      '<span>🔒 Alumni Archive View (Read-Only)</span>' +
+    '</div>' +
+    // Header title
     '<div style="margin-bottom:16px">' +
-      '<h2 class="font-outfit" style="font-size:24px;font-weight:900;color:#1B365D">Good Afternoon, Khadija</h2>' +
-      '<p style="font-size:12px;color:#64748B;margin-top:2px">JSS 3A • Student ID: STU-001 • Term 1, 2026</p>' +
-    '</div>' +
-
-    // Quick Stats Row
-    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">' +
-      // Attendance
-      '<div class="card" style="margin-bottom:0">' +
-        '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">' +
-          '<span style="font-size:18px">📅</span>' +
-          '<span style="font-size:9px;font-weight:700;background:#DCFCE7;color:#166534;padding:2px 6px;border-radius:6px">+2.1%</span>' +
-        '</div>' +
-        '<div style="font-size:10px;font-weight:700;color:#64748B">Attendance</div>' +
-        '<div class="font-outfit" style="font-size:22px;font-weight:900;color:#1B365D">96.8%</div>' +
-        '<div style="width:100%;height:4px;background:#E2E8F0;border-radius:2px;margin-top:6px;overflow:hidden"><div style="width:96.8%;height:100%;background:#22C55E;border-radius:2px"></div></div>' +
-      '</div>' +
-
-      // GPA
-      '<div class="card" style="margin-bottom:0">' +
-        '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">' +
-          '<span style="font-size:18px">🎓</span>' +
-          '<span style="font-size:9px;font-weight:700;background:#FEF3C7;color:#92400E;padding:2px 6px;border-radius:6px">Top 5%</span>' +
-        '</div>' +
-        '<div style="font-size:10px;font-weight:700;color:#64748B">Current GPA</div>' +
-        '<div class="font-outfit" style="font-size:22px;font-weight:900;color:#1B365D">3.82</div>' +
-        '<div style="width:100%;height:4px;background:#E2E8F0;border-radius:2px;margin-top:6px;overflow:hidden"><div style="width:95.5%;height:100%;background:#3B82F6;border-radius:2px"></div></div>' +
-      '</div>' +
-    '</div>' +
-
-    // Leaderboard rank card
-    '<div class="card card-dark" style="display:flex;align-items:center;gap:14px">' +
-      '<div style="width:48px;height:48px;background:rgba(255,204,0,0.15);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0">🏆</div>' +
-      '<div style="flex:1">' +
-        '<div style="font-size:10px;font-weight:700;color:#FFCC00;text-transform:uppercase;letter-spacing:1px">Leaderboard Rank</div>' +
-        '<div class="font-outfit" style="font-size:24px;font-weight:900;color:white">#4 <span style="font-size:12px;font-weight:600;color:rgba(255,255,255,0.6)">of 342 students</span></div>' +
-        '<div style="font-size:11px;color:rgba(255,255,255,0.7);margin-top:2px">4,520 Total Points • 12 Day Streak 🔥</div>' +
-      '</div>' +
-    '</div>' +
-
-    // Today's Timetable
-    '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;margin-top:4px">' +
-      '<h3 class="font-outfit" style="font-size:15px;font-weight:800;color:#1B365D">Today\'s Schedule</h3>' +
-      '<span style="font-size:10px;font-weight:700;color:#3B82F6;cursor:pointer">Full Timetable →</span>' +
-    '</div>' +
-
-    '<div class="card" style="padding:0;overflow:hidden">' +
-      // Period 1
-      '<div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid #F1F5F9">' +
-        '<div style="width:36px;height:36px;background:#EFF6FF;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">🧪</div>' +
-        '<div style="flex:1">' +
-          '<div style="font-size:12px;font-weight:700;color:#1B365D">Integrated Science</div>' +
-          '<div style="font-size:10px;color:#64748B">Rm 112 • Mr. A. Kamara</div>' +
-        '</div>' +
-        '<div style="text-align:right">' +
-          '<div style="font-size:10px;font-weight:700;color:#1B365D">08:00</div>' +
-          '<span style="font-size:9px;font-weight:700;background:#DCFCE7;color:#166534;padding:1px 6px;border-radius:4px">Done</span>' +
-        '</div>' +
-      '</div>' +
-      // Period 2 (Active)
-      '<div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid #F1F5F9;background:#EFF6FF;border-left:3px solid #3B82F6">' +
-        '<div style="width:36px;height:36px;background:#DBEAFE;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">📐</div>' +
-        '<div style="flex:1">' +
-          '<div style="font-size:12px;font-weight:700;color:#1B365D">Core Mathematics</div>' +
-          '<div style="font-size:10px;color:#64748B">Rm 304 • Dr. Aris</div>' +
-        '</div>' +
-        '<div style="text-align:right">' +
-          '<div style="font-size:10px;font-weight:700;color:#1B365D">10:00</div>' +
-          '<span style="font-size:9px;font-weight:700;background:#3B82F6;color:white;padding:1px 6px;border-radius:4px">Now</span>' +
-        '</div>' +
-      '</div>' +
-      // Period 3
-      '<div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid #F1F5F9">' +
-        '<div style="width:36px;height:36px;background:#FFF7ED;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">📜</div>' +
-        '<div style="flex:1">' +
-          '<div style="font-size:12px;font-weight:700;color:#1B365D">English Literature</div>' +
-          '<div style="font-size:10px;color:#64748B">Rm 205 • Mrs. Johnson</div>' +
-        '</div>' +
-        '<div style="text-align:right">' +
-          '<div style="font-size:10px;font-weight:700;color:#94A3B8">12:00</div>' +
-          '<span style="font-size:9px;font-weight:600;color:#94A3B8">Upcoming</span>' +
-        '</div>' +
-      '</div>' +
-      // Period 4
-      '<div style="display:flex;align-items:center;gap:12px;padding:12px 16px">' +
-        '<div style="width:36px;height:36px;background:#FDF2F8;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">🎨</div>' +
-        '<div style="flex:1">' +
-          '<div style="font-size:12px;font-weight:700;color:#1B365D">Creative Arts</div>' +
-          '<div style="font-size:10px;color:#64748B">Art Lab • Ms. Williams</div>' +
-        '</div>' +
-        '<div style="text-align:right">' +
-          '<div style="font-size:10px;font-weight:700;color:#94A3B8">14:00</div>' +
-          '<span style="font-size:9px;font-weight:600;color:#94A3B8">Upcoming</span>' +
-        '</div>' +
-      '</div>' +
-    '</div>' +
-
-    // Pending Assignments
-    '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">' +
-      '<h3 class="font-outfit" style="font-size:15px;font-weight:800;color:#1B365D">Pending Assignments</h3>' +
-      '<span style="font-size:9px;font-weight:700;background:#FEF2F2;color:#DC2626;padding:2px 8px;border-radius:6px">3 Due</span>' +
-    '</div>' +
-
-    '<div class="card" style="display:flex;align-items:center;gap:12px;cursor:pointer" onclick="alert(\\\'Opening Assignment: Quadratic Equations Worksheet\\\')">' +
-      '<div style="width:40px;height:40px;background:#FEF2F2;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">📄</div>' +
-      '<div style="flex:1">' +
-        '<div style="font-size:12px;font-weight:700;color:#1B365D">Quadratic Equations Worksheet</div>' +
-        '<div style="font-size:10px;color:#64748B">Core Mathematics • Dr. Aris</div>' +
-      '</div>' +
-      '<div style="text-align:right">' +
         '<div style="font-size:10px;font-weight:700;color:#DC2626">Due Tomorrow</div>' +
       '</div>' +
     '</div>' +
@@ -1223,6 +1128,209 @@ function renderProfile(el) {
     '<button class="btn-primary" style="background:#DC2626;box-shadow:0 4px 12px -2px rgba(220,38,38,0.3);margin-top:4px" onclick="location.reload()">Sign Out</button>' +
 
     '<p class="text-center" style="font-size:9px;color:#94A3B8;margin-top:12px;font-weight:600">Standards International School • S.I.S. Mobile Engine v2.0<br>Convex Cloud Backend • Rate-Limited Auth</p>' +
+  '</div>';
+}
+
+function renderAlumniHome(el) {
+  el.innerHTML = '<div class="fade-in-up">' +
+    // Top banner
+    '<div style="background:#0F1E36;color:white;padding:8px 12px;margin:-16px -16px 16px;text-align:center;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:6px">' +
+      '<span>🔒 Alumni Archive View (Read-Only)</span>' +
+    '</div>' +
+    // Header title
+    '<div style="margin-bottom:16px">' +
+      '<h2 class="font-outfit" style="font-size:24px;font-weight:900;color:#1B365D">Alumni Archive</h2>' +
+      '<p style="font-size:12px;color:#64748B;margin-top:4px;line-height:1.4">Welcome back, Kwabena. Your historical records and certificates are securely stored here in read-only mode.</p>' +
+    '</div>' +
+
+    // 1. BECE/WASSCE Certificate Vault
+    '<div class="card">' +
+      '<div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">' +
+      '  <span style="font-size:18px">🎓</span>' +
+      '  <h3 class="font-outfit" style="font-size:15px;font-weight:800;color:#1B365D">BECE/WASSCE Certificate Vault</h3>' +
+      '</div>' +
+      // WASSCE card
+      '<div style="border:1px solid #E2E8F0;border-radius:12px;padding:12px;margin-bottom:10px;display:flex;align-items:center;justify-content:between;gap:8px">' +
+        '<div style="flex:1">' +
+          '<div style="font-size:12px;font-weight:700;color:#1B365D">WASSCE Final Certificate - 2023</div>' +
+          '<div style="font-size:10px;color:#64748B;margin-top:2px">Issued: Nov 2023 • Validated</div>' +
+        '</div>' +
+        '<button class="btn-primary" style="width:auto;padding:6px 12px;font-size:10px;background:#1B365D" onclick="alert(\'Downloading WASSCE 2023 PDF...\')">Download PDF</button>' +
+      '</div>' +
+      // BECE card
+      '<div style="border:1px solid #E2E8F0;border-radius:12px;padding:12px;display:flex;align-items:center;justify-content:between;gap:8px">' +
+        '<div style="flex:1">' +
+          '<div style="font-size:12px;font-weight:700;color:#1B365D">BECE Final Certificate - 2020</div>' +
+          '<div style="font-size:10px;color:#64748B;margin-top:2px">Issued: Oct 2020 • Validated</div>' +
+        '</div>' +
+        '<button class="btn-primary" style="width:auto;padding:6px 12px;font-size:10px;background:#1B365D" onclick="alert(\'Downloading BECE 2020 PDF...\')">Download PDF</button>' +
+      '</div>' +
+    '</div>' +
+
+    // 2. Historical Transcripts
+    '<div class="card">' +
+      '<div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">' +
+      '  <span style="font-size:18px">📜</span>' +
+      '  <h3 class="font-outfit" style="font-size:15px;font-weight:800;color:#1B365D">Historical Transcripts</h3>' +
+      '</div>' +
+      // High school
+      '<div style="border:1px solid #E2E8F0;border-radius:12px;padding:12px;margin-bottom:10px">' +
+        '<div style="font-size:12px;font-weight:700;color:#1B365D">Senior High School Transcript</div>' +
+        '<div style="font-size:10px;color:#64748B;margin-top:2px;margin-bottom:10px">Complete academic record (Forms 1-3).</div>' +
+        '<button class="btn-primary" style="background:#F1F5F9;color:#1B365D;border:1px solid #CBD5E1;box-shadow:none;padding:8px" onclick="alert(\'Requesting official High School Transcript copy...\')">Get Official Copy</button>' +
+      '</div>' +
+      // Junior high
+      '<div style="border:1px solid #E2E8F0;border-radius:12px;padding:12px">' +
+        '<div style="font-size:12px;font-weight:700;color:#1B365D">Junior High School Transcript</div>' +
+        '<div style="font-size:10px;color:#64748B;margin-top:2px;margin-bottom:10px">Complete academic record (JHS 1-3).</div>' +
+        '<button class="btn-primary" style="background:#F1F5F9;color:#1B365D;border:1px solid #CBD5E1;box-shadow:none;padding:8px" onclick="alert(\'Requesting official Junior High Transcript copy...\')">Get Official Copy</button>' +
+      '</div>' +
+    '</div>' +
+
+    // 3. Billing Statements
+    '<div class="card">' +
+      '<div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">' +
+      '  <span style="font-size:18px">💳</span>' +
+      '  <h3 class="font-outfit" style="font-size:15px;font-weight:800;color:#1B365D">Billing Statements</h3>' +
+      '</div>' +
+      '<div style="display:flex;justify-content:space-between;align-items:center;font-size:12px;padding:8px 0;border-bottom:1px solid #F1F5F9">' +
+        '<span style="font-weight:600;color:#1B365D">Term 3 - 2023</span>' +
+        '<a href="#" style="color:#3B82F6;text-decoration:none;font-weight:700" onclick="alert(\'Loading statement for Term 3...\')">View ↗</a>' +
+      '</div>' +
+      '<div style="display:flex;justify-content:space-between;align-items:center;font-size:12px;padding:8px 0;border-bottom:1px solid #F1F5F9">' +
+        '<span style="font-weight:600;color:#1B365D">Term 2 - 2023</span>' +
+        '<a href="#" style="color:#3B82F6;text-decoration:none;font-weight:700" onclick="alert(\'Loading statement for Term 2...\')">View ↗</a>' +
+      '</div>' +
+      '<div style="display:flex;justify-content:space-between;align-items:center;font-size:12px;padding:8px 0">' +
+        '<span style="font-weight:600;color:#1B365D">Term 1 - 2023</span>' +
+        '<a href="#" style="color:#3B82F6;text-decoration:none;font-weight:700" onclick="alert(\'Loading statement for Term 1...\')">View ↗</a>' +
+      '</div>' +
+      '<button class="btn-primary" style="background:#E8F0FE;color:#1B365D;box-shadow:none;margin-top:14px" onclick="alert(\'Loading full payment history archive...\')">View All History</button>' +
+    '</div>' +
+
+    // 4. Active Courses & Actions (Greyed out)
+    '<div class="card" style="opacity:0.6">' +
+      '<div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">' +
+      '  <span style="font-size:18px">🚫</span>' +
+      '  <h3 class="font-outfit" style="font-size:15px;font-weight:800;color:#94A3B8">Active Courses &amp; Actions</h3>' +
+      '</div>' +
+      '<p style="font-size:11px;color:#94A3B8;line-height:1.4;margin-bottom:14px">Course registration, assignment submissions, and active feedback are disabled for alumni accounts.</p>' +
+      '<button class="btn-primary" style="background:#E2E8F0;color:#94A3B8;cursor:not-allowed;box-shadow:none;margin-bottom:8px" disabled>Submit Assignment (Disabled)</button>' +
+      '<button class="btn-primary" style="background:#E2E8F0;color:#94A3B8;cursor:not-allowed;box-shadow:none" disabled>Register Course (Disabled)</button>' +
+    '</div>' +
+  '</div>';
+}
+
+function renderActiveStudentHome(el) {
+  el.innerHTML = '<div class="fade-in-up">' +
+    // Profile Header
+    '<div class="card text-center" style="padding:20px 16px">' +
+      '<img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=150&q=80" style="width:72px;height:72px;border-radius:50%;object-fit:cover;margin:0 auto 10px" />' +
+      '<h2 class="font-outfit" style="font-size:20px;font-weight:900;color:#1B365D">Alexander Sterling</h2>' +
+      '<p style="font-size:12px;color:#64748B;margin-top:2px">Grade 11 • Advanced Sciences Track</p>' +
+      '<div style="display:flex;justify-content:center;margin-top:10px">' +
+        '<span style="font-size:10px;font-weight:700;background:#E8F0FE;color:#1D4ED8;padding:4px 10px;border-radius:10px;display:flex;align-items:center;gap:4px">★ Excellence Scholar</span>' +
+      '</div>' +
+    '</div>' +
+
+    // Attendance Rate card
+    '<div class="card">' +
+      '<h3 class="font-outfit" style="font-size:15px;font-weight:800;color:#1B365D;margin-bottom:16px">Attendance Rate</h3>' +
+      '<div style="display:flex;justify-content:center;position:relative;margin:10px 0 20px">' +
+        '<svg width="120" height="120" viewBox="0 0 120 120">' +
+          '<circle cx="60" cy="60" r="50" fill="none" stroke="#F1F5F9" stroke-width="8" />' +
+          '<circle cx="60" cy="60" r="50" fill="none" stroke="#1B365D" stroke-width="8" stroke-dasharray="314" stroke-dashoffset="15.7" stroke-linecap="round" transform="rotate(-90 60 60)" />' +
+        '</svg>' +
+        '<div style="position:absolute;top:50%;left:50%;transform:translate(-50%, -50%);text-align:center">' +
+          '<div class="font-outfit" style="font-size:22px;font-weight:900;color:#1B365D">95%</div>' +
+          '<div style="font-size:9px;font-weight:700;color:#1B365D">PRESENT</div>' +
+        '</div>' +
+      '</div>' +
+      '<p style="font-size:11px;color:#64748B;text-align:center">Consistent attendance maintaining top tier status.</p>' +
+    '</div>' +
+
+    // Gemini AI Syllabus Progress card
+    '<div class="card">' +
+      '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">' +
+        '<div style="display:flex;align-items:center;gap:6px">' +
+          '<span style="font-size:16px">🤖</span>' +
+          '<h3 class="font-outfit" style="font-size:15px;font-weight:800;color:#1B365D">Gemini AI Syllabus Progress</h3>' +
+        '</div>' +
+        '<span style="font-size:10px;font-weight:700;color:#3B82F6;cursor:pointer">View Details</span>' +
+      '</div>' +
+      
+      // Phys
+      '<div style="margin-bottom:12px">' +
+        '<div style="display:flex;justify-content:space-between;font-size:11px;font-weight:700;margin-bottom:4px">' +
+          '<span style="color:#1B365D">Advanced Physics - Quantum Mechanics</span>' +
+          '<span>78%</span>' +
+        '</div>' +
+        '<div class="progress-track" style="margin:0"><div class="progress-fill" style="width:78%;background:#1B365D"></div></div>' +
+      '</div>' +
+
+      // Lit
+      '<div style="margin-bottom:12px">' +
+        '<div style="display:flex;justify-content:space-between;font-size:11px;font-weight:700;margin-bottom:4px">' +
+          '<span style="color:#1B365D">Literature - Modernist Era</span>' +
+          '<span>92%</span>' +
+        '</div>' +
+        '<div class="progress-track" style="margin:0"><div class="progress-fill" style="width:92%;background:#1B365D"></div></div>' +
+      '</div>' +
+
+      // Calc
+      '<div style="margin-bottom:14px">' +
+        '<div style="display:flex;justify-content:space-between;font-size:11px;font-weight:700;margin-bottom:4px">' +
+          '<span style="color:#1B365D">Calculus II - Integration Applications</span>' +
+          '<span>45%</span>' +
+        '</div>' +
+        '<div class="progress-track" style="margin:0"><div class="progress-fill" style="width:45%;background:#1B365D"></div></div>' +
+      '</div>' +
+
+      // Suggestion
+      '<div style="background:#E8F0FE;border-radius:12px;padding:12px;display:flex;gap:8px">' +
+        '<span style="font-size:16px;color:#1B365D">💡</span>' +
+        '<p style="font-size:11px;color:#1B365D;line-height:1.4">AI Suggestion: Focus on Calculus II Integration techniques this week to stay on track with the cohort baseline.</p>' +
+      '</div>' +
+    '</div>' +
+
+    // Cohort Leaderboard card
+    '<div class="card">' +
+      '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">' +
+        '<div style="display:flex;align-items:center;gap:6px">' +
+          '<span style="font-size:16px">🏆</span>' +
+          '<h3 class="font-outfit" style="font-size:15px;font-weight:800;color:#1B365D">Cohort Leaderboard</h3>' +
+        '</div>' +
+        '<span style="font-size:10px;font-weight:700;background:#1B365D;color:white;padding:3px 8px;border-radius:6px">Term 2</span>' +
+      '</div>' +
+
+      // Item 1
+      '<div style="display:flex;align-items:center;gap:12px;padding:8px 0">' +
+        '<div class="font-outfit" style="font-size:15px;font-weight:800;color:#B45309;width:20px;text-align:center">1</div>' +
+        '<img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=100&q=80" style="width:32px;height:32px;border-radius:50%;object-fit:cover" />' +
+        '<div style="flex:1;font-size:12px;font-weight:700;color:#1B365D">Sarah Jenkins</div>' +
+        '<div class="font-outfit" style="font-size:12px;font-weight:800;color:#1B365D">12,450 pts</div>' +
+      '</div>' +
+      '<hr style="border:0;border-top:1px solid #F1F5F9" />' +
+
+      // Item 2 (Me)
+      '<div style="display:flex;align-items:center;gap:12px;padding:8px;background:#E8F0FE;border-radius:10px;margin:4px 0">' +
+        '<div class="font-outfit" style="font-size:15px;font-weight:800;color:#1B365D;width:20px;text-align:center">2</div>' +
+        '<img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=150&q=80" style="width:32px;height:32px;border-radius:50%;object-fit:cover" />' +
+        '<div style="flex:1;font-size:12px;font-weight:700;color:#1B365D">Alexander Sterling (You)</div>' +
+        '<div class="font-outfit" style="font-size:12px;font-weight:800;color:#1B365D">12,100 pts</div>' +
+      '</div>' +
+      '<hr style="border:0;border-top:1px solid #F1F5F9" />' +
+
+      // Item 3
+      '<div style="display:flex;align-items:center;gap:12px;padding:8px 0">' +
+        '<div class="font-outfit" style="font-size:15px;font-weight:800;color:#64748B;width:20px;text-align:center">3</div>' +
+        '<img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80" style="width:32px;height:32px;border-radius:50%;object-fit:cover" />' +
+        '<div style="flex:1;font-size:12px;font-weight:700;color:#1B365D">Michael Chang</div>' +
+        '<div class="font-outfit" style="font-size:12px;font-weight:800;color:#1B365D">11,850 pts</div>' +
+      '</div>' +
+
+      '<button class="btn-primary" style="background:#F8F9FA;color:#1B365D;border:1px solid #E2E8F0;box-shadow:none;margin-top:14px;font-size:11px" onclick="alert(\'Loading full leaderboard standings...\')">VIEW FULL RANKINGS</button>' +
+    '</div>' +
   '</div>';
 }
 
