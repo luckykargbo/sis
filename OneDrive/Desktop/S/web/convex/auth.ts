@@ -261,6 +261,8 @@ export const login = mutation({
       fullName: user.fullName,
       email: user.email,
       role: user.role,
+      status: user.status || 'ACTIVE',
+      currentGradeLevel: user.currentGradeLevel || 'JSS1',
     };
   },
 });

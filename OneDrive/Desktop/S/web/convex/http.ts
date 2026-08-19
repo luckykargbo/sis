@@ -27,19 +27,23 @@ http.route({
   handler: httpAction(async (ctx, request) => {
     try {
       const body = await request.json();
+      const loginResult = await ctx.runMutation(api.auth.login, {
+        email: body.email,
+        password: body.password,
+      });
+
       return new Response(
         JSON.stringify({
           success: true,
           data: {
             token: 'jwt_sis_2026_token',
             user: {
-              id: 'usr_001',
-              email: body.email,
-              role: body.email.toUpperCase().includes('TEACHER') ? 'TEACHER' :
-                    body.email.toUpperCase().includes('PARENT') ? 'PARENT' :
-                    body.email.toUpperCase().includes('PRINCIPAL') ? 'PRINCIPAL' :
-                    body.email.toUpperCase().includes('VP') ? 'VICE_PRINCIPAL' :
-                    body.email.toUpperCase().includes('ADMIN') ? 'IT_ADMIN' : 'STUDENT',
+              id: loginResult.userId,
+              fullName: loginResult.fullName,
+              email: loginResult.email,
+              role: loginResult.role,
+              status: loginResult.status,
+              currentGradeLevel: loginResult.currentGradeLevel,
             },
           },
         }),
